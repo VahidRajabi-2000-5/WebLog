@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Post
+
+def post_list_view(request):
+    posts = Post.objects.all().filter(status='Pub')
+    return render(request,'blog/posts_list.html',{"posts":posts})
+    
+     

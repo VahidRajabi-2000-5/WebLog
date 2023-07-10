@@ -13,7 +13,7 @@ class PostAdmin(admin.ModelAdmin):
         'status',
 
     ]
+    ordering = ('-status', '-datetime_modified',)
 
 
 admin.site.register(Post, PostAdmin)
- 
