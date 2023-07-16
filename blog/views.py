@@ -1,5 +1,4 @@
 from django.shortcuts import render,get_object_or_404,redirect,reverse
-from django.contrib.auth.models import User
 
 
 from .models import Post
@@ -35,15 +34,23 @@ def post_create_view(request):
     return render(request,'blog/post_create.html',{'form':form})
 
 
+def post_update_view(request,pk):
+    post=get_object_or_404(Post,pk=pk)
+    form = NewPostForm(request.POST or None,instance=post)
+    if form.is_valid():
+        form.save()
+        return redirect(post.get_absolute_url())
+
+    return render(request,'blog/post_create.html',{'form':form})
 
 
 
-
-
-
-
-
-
-
-
+def post_delete_view(request,pk):
+    post = get_object_or_404(Post,pk=pk)
+    if request.method =="POST":
+        post.delete() 
+        return redirect('posts_list')
+    
+    return render(request,'blog/post_delete.html',{'post':post})
+        
 
