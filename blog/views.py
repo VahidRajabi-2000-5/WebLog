@@ -1,8 +1,9 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect,reverse
 from django.contrib.auth.models import User
 
 
 from .models import Post
+from .forms import NewPostForm
 
 def post_list_view(request):
     posts = Post.objects.filter(status='Pub').order_by('-datetime_modified')
@@ -20,19 +21,18 @@ def post_detail_view(request,pk):
 # =======================
 
 def post_create_view(request):
-    if request.method =="POST":
-        print("POST Request")
-        post_title = request.POST.get('title')
-        post_text = request.POST.get('text')
-        
-        user = User.objects.all()[0]
-        
-        Post.objects.create(title=post_title,text=post_text,author=user,status='Pub')
-    
+    if request.method =='POST':
+        form = NewPostForm(request.POST)
+        if form.is_valid():
+            # instance=form.save()
+            post = form.save()
+            # post_id = form.instance.pk
+            form =NewPostForm()
+            return redirect(post.get_absolute_url())
     else:
-        print("GET Request")
+        form = NewPostForm()
         
-    return render(request,'blog/post_create.html',)
+    return render(request,'blog/post_create.html',{'form':form})
 
 
 
