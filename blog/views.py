@@ -15,8 +15,8 @@ def post_detail_view(request,pk):
     return render(request,'blog/post_detail.html',{"post":post})
     
 # =======================
-# def handling_404(request,exception):
-#     return render (request,'blog/404.html') 
+def page_not_found(request,exception):
+    return render (request,'blog/404.html') 
 # =======================
 
 def post_create_view(request):
